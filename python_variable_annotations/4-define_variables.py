@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Module that converts a float to its string representation."""
+"""Module that defines variables with type annotations."""
 
-
-def to_str(n: float) -> str:
-    """Return the string representation of a floating-point number."""
-    return str(n)
+a: int = 1
+pi: float = 3.14
+i_understand_annotations: bool = True
+school: str = "Holberton"

@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
-"""Module that creates floating-point multiplier functions."""
+"""Module that returns iterable elements with their lengths."""
 
-from typing import Callable
+from typing import Iterable, List, Sequence, Tuple
 
 
-def make_multiplier(multiplier: float) -> Callable[[float], float]:
-    """Return a function that multiplies a float by multiplier."""
-    def multiply(number: float) -> float:
-        """Return number multiplied by the enclosing multiplier."""
-        return number * multiplier
-
-    return multiply
+def element_length(lst: Iterable[Sequence]) -> List[Tuple[Sequence, int]]:
+    """Return each sequence in an iterable together with its length."""
+    return [(item, len(item)) for item in lst]

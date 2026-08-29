@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Module that converts a float to its string representation."""
+"""Module that sums a list of floating-point numbers."""
+
+from typing import List
 
 
-def to_str(n: float) -> str:
-    """Return the string representation of a floating-point number."""
-    return str(n)
+def sum_list(input_list: List[float]) -> float:
+    """Return the sum of all floating-point numbers in a list."""
+    return sum(input_list)
