@@ -3,7 +3,8 @@
 Deletion-resilient hypermedia pagination module.
 """
 import csv
-from typing import List, Dict
+import math
+from typing import Dict, List
 
 
 class Server:
@@ -11,8 +12,7 @@ class Server:
     """
     DATA_FILE = "Popular_Baby_Names.csv"
 
-    def __init__(self) -> None:
-        """Initialize the server instance."""
+    def __init__(self):
         self.__dataset = None
         self.__indexed_dataset = None
 
@@ -32,6 +32,7 @@ class Server:
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
+            truncated_dataset = dataset[:1000]
             self.__indexed_dataset = {
                 i: dataset[i] for i in range(len(dataset))
             }
@@ -39,23 +40,23 @@ class Server:
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         """
-        Return a dictionary with deletion-resilient pagination data.
+        Get deletion-resilient hypermedia pagination info.
         """
-        assert type(index) == int and type(page_size) == int
-        assert 0 <= index < len(self.dataset())
-
         indexed_data = self.indexed_dataset()
-        data = []
-        next_index = index
+        assert index is not None and isinstance(index, int)
+        assert 0 <= index < len(indexed_data)
 
-        while len(data) < page_size and next_index < len(self.dataset()):
-            if next_index in indexed_data:
-                data.append(indexed_data[next_index])
-            next_index += 1
+        data = []
+        current_index = index
+
+        while len(data) < page_size and current_index < len(self.dataset()):
+            if current_index in indexed_data:
+                data.append(indexed_data[current_index])
+            current_index += 1
 
         return {
-            "index": index,
-            "data": data,
-            "page_size": len(data),
-            "next_index": next_index
+            'index': index,
+            'data': data,
+            'page_size': len(data),
+            'next_index': current_index
         }
