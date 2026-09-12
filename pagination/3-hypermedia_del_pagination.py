@@ -44,9 +44,10 @@ class Server:
         if index is None:
             index = 0
             
-        dataset = self.indexed_dataset()
-        assert isinstance(index, int) and 0 <= index < len(self.dataset())
+        assert type(index) == int and 0 <= index < len(self.dataset())
+        assert type(page_size) == int and page_size > 0
 
+        dataset = self.indexed_dataset()
         data = []
         current_idx = index
 
