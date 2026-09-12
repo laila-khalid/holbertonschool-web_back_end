@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Module for Deletion-resilient hypermedia pagination.
+Deletion-resilient hypermedia pagination module.
 """
 import csv
 import math
@@ -12,8 +12,7 @@ class Server:
     """
     DATA_FILE = "Popular_Baby_Names.csv"
 
-    def __init__(self) -> None:
-        """Initialize the server instance."""
+    def __init__(self):
         self.__dataset = None
         self.__indexed_dataset = None
 
@@ -42,24 +41,23 @@ class Server:
         """
         Return a dictionary with deletion-resilient pagination data.
         """
-        dataset_len = len(self.dataset())
         if index is None:
             index = 0
             
-        assert type(index) == int and 0 <= index < dataset_len
+        dataset = self.indexed_dataset()
+        assert type(index) == int and 0 <= index < len(self.dataset())
 
-        indexed_data = self.indexed_dataset()
         data = []
         current_idx = index
 
-        while len(data) < page_size and current_idx < dataset_len:
-            if current_idx in indexed_data:
-                data.append(indexed_data[current_idx])
+        while len(data) < page_size and current_idx < len(self.dataset()):
+            if current_idx in dataset:
+                data.append(dataset[current_idx])
             current_idx += 1
 
         return {
             'index': index,
-            'next_index': current_idx if current_idx < dataset_len else None,
+            'next_index': current_idx,
             'page_size': len(data),
             'data': data
         }
