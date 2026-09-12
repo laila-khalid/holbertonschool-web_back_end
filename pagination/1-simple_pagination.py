@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
 """
-Module for Simple pagination.
+Simple pagination module.
 """
 import csv
 import math
-from typing import List, Tuple
+from typing import List
 
 
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """
-    Calculate start and end indexes for pagination.
-    """
-    return ((page - 1) * page_size, page * page_size)
+index_range = __import__('0-simple_helper_function').index_range
 
 
 class Server:
@@ -19,8 +15,7 @@ class Server:
     """
     DATA_FILE = "Popular_Baby_Names.csv"
 
-    def __init__(self) -> None:
-        """Initialize the server instance."""
+    def __init__(self):
         self.__dataset = None
 
     def dataset(self) -> List[List]:
@@ -42,9 +37,9 @@ class Server:
         assert type(page_size) == int and page_size > 0
 
         start, end = index_range(page, page_size)
-        dataset = self.dataset()
+        data = self.dataset()
 
-        if start >= len(dataset):
+        if start >= len(data):
             return []
 
-        return dataset[start:end]
+        return data[start:end]
