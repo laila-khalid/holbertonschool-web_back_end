@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple pagination module.
+Module for Simple pagination.
 """
 import csv
 import math
@@ -9,7 +9,7 @@ from typing import List, Tuple
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """
-    Calculate start and end indexes for pagination parameters.
+    Calculate start and end indexes for pagination.
     """
     return ((page - 1) * page_size, page * page_size)
 
@@ -19,7 +19,8 @@ class Server:
     """
     DATA_FILE = "Popular_Baby_Names.csv"
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Initialize the server instance."""
         self.__dataset = None
 
     def dataset(self) -> List[List]:
@@ -35,16 +36,15 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """
-        Get a specific page of data from dataset.
+        Return the appropriate page of the dataset.
         """
-        assert isinstance(page, int) and page > 0
-        assert isinstance(page_size, int) and page_size > 0
+        assert type(page) == int and page > 0
+        assert type(page_size) == int and page_size > 0
 
         start, end = index_range(page, page_size)
-        data = self.dataset()
+        dataset = self.dataset()
 
-        if start >= len(data):
+        if start >= len(dataset):
             return []
 
-        return data[start:end]
-    
+        return dataset[start:end]

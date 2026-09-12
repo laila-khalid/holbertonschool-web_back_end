@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Deletion-resilient hypermedia pagination module.
+Module for Deletion-resilient hypermedia pagination.
 """
 import csv
 import math
-from typing import Dict, List
+from typing import List, Dict, Any
 
 
 class Server:
@@ -12,7 +12,8 @@ class Server:
     """
     DATA_FILE = "Popular_Baby_Names.csv"
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Initialize the server instance."""
         self.__dataset = None
         self.__indexed_dataset = None
 
@@ -32,32 +33,33 @@ class Server:
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
-            truncated_dataset = dataset[:1000]
             self.__indexed_dataset = {
                 i: dataset[i] for i in range(len(dataset))
             }
         return self.__indexed_dataset
 
-    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
+    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict[str, Any]:
         """
-        Get deletion-resilient hypermedia pagination info.
+        Return a dictionary with deletion-resilient pagination data.
         """
+        dataset_len = len(self.dataset())
+        if index is None:
+            index = 0
+            
+        assert type(index) == int and 0 <= index < dataset_len
+
         indexed_data = self.indexed_dataset()
-        assert index is not None and isinstance(index, int)
-        assert 0 <= index < len(indexed_data)
-
         data = []
-        current_index = index
+        current_idx = index
 
-        while len(data) < page_size and current_index < len(self.dataset()):
-            if current_index in indexed_data:
-                data.append(indexed_data[current_index])
-            current_index += 1
+        while len(data) < page_size and current_idx < dataset_len:
+            if current_idx in indexed_data:
+                data.append(indexed_data[current_idx])
+            current_idx += 1
 
         return {
             'index': index,
-            'data': data,
+            'next_index': current_idx if current_idx < dataset_len else None,
             'page_size': len(data),
-            'next_index': current_index
+            'data': data
         }
-    
