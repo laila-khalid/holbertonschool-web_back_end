@@ -3,7 +3,6 @@
 Deletion-resilient hypermedia pagination module.
 """
 import csv
-import math
 from typing import List, Dict, Any
 
 
@@ -12,7 +11,8 @@ class Server:
     """
     DATA_FILE = "Popular_Baby_Names.csv"
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Initialize the server instance."""
         self.__dataset = None
         self.__indexed_dataset = None
 
@@ -45,7 +45,7 @@ class Server:
             index = 0
             
         dataset = self.indexed_dataset()
-        assert type(index) == int and 0 <= index < len(self.dataset())
+        assert isinstance(index, int) and 0 <= index < len(self.dataset())
 
         data = []
         current_idx = index

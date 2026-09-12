@@ -3,7 +3,6 @@
 Simple pagination module.
 """
 import csv
-import math
 from typing import List
 
 
@@ -15,7 +14,8 @@ class Server:
     """
     DATA_FILE = "Popular_Baby_Names.csv"
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Initialize the server instance."""
         self.__dataset = None
 
     def dataset(self) -> List[List]:
@@ -33,8 +33,8 @@ class Server:
         """
         Return the appropriate page of the dataset.
         """
-        assert type(page) == int and page > 0
-        assert type(page_size) == int and page_size > 0
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
 
         start, end = index_range(page, page_size)
         data = self.dataset()
