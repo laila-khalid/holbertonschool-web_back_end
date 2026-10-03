@@ -8,37 +8,22 @@ function countStudents(path) {
         return;
       }
 
-      // Split lines and filter out any completely empty rows
       const lines = data.split('\n').filter((line) => line.trim() !== '');
-      if (lines.length <= 1) {
-        console.log('Number of students: 0');
-        resolve();
-        return;
-      }
+      const students = lines.slice(1);
 
-      const students = lines.slice(1); // Omit header row
       console.log(`Number of students: ${students.length}`);
 
       const fields = {};
-
-      // Parse records explicitly avoiding restricted loops for ESLint
-      students.forEach((student) => {
-        const studentData = student.split(',');
-        if (studentData.length >= 4) {
-          const firstName = studentData[0].trim();
-          const field = studentData[3].trim();
-
-          if (!fields[field]) {
-            fields[field] = [];
-          }
-          fields[field].push(firstName);
-        }
+      students.forEach((line) => {
+        const parts = line.split(',');
+        const firstName = parts[0];
+        const field = parts[3];
+        if (!fields[field]) fields[field] = [];
+        fields[field].push(firstName);
       });
 
-      // Format and print structural fields summary
       Object.keys(fields).forEach((field) => {
-        const list = fields[field];
-        console.log(`Number of students in ${field}: ${list.length}. List: ${list.join(', ')}`);
+        console.log(`Number of students in ${field}: ${fields[field].length}. List: ${fields[field].join(', ')}`);
       });
 
       resolve();
